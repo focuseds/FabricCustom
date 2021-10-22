@@ -114,7 +114,6 @@ Capabilities:
         V2_0: true
 
 Application: &ApplicationDefaults
-
     Organizations:
     Policies:
         Readers:
@@ -135,8 +134,8 @@ Application: &ApplicationDefaults
 
     Capabilities:
         <<: *ApplicationCapabilities
-Orderer: &OrdererDefaults
 
+Orderer: &OrdererDefaults
     OrdererType: etcdraft
     Addresses:
         - orderer.example.com:7050
@@ -184,7 +183,7 @@ Channel: &ChannelDefaults
         <<: *ChannelCapabilities
 
 Profiles:
-    TwoOrgsOrdererGenesis:
+    OrdererGenesis:
         <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
