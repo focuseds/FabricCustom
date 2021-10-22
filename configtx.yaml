@@ -65,9 +65,9 @@ Organizations:
         Name: Org3MSP
         ID: Org3MSP
 
-        MSPDir: crypto-config/peerOrganizations/Org3.example.com/msp
+        MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
         AnchorPeers:
-            - Host: peer0.Org3.example.com
+            - Host: peer0.org3.example.com
               Port: 7051
         Policies:
             Readers:
@@ -87,9 +87,9 @@ Organizations:
         Name: Org4MSP
         ID: Org4MSP
 
-        MSPDir: crypto-config/peerOrganizations/Org4.example.com/msp
+        MSPDir: crypto-config/peerOrganizations/org4.example.com/msp
         AnchorPeers:
-            - Host: peer0.Org4.example.com
+            - Host: peer0.org4.example.com
               Port: 7051
         Policies:
             Readers:

@@ -1,2 +1,4 @@
 # 根据配置文件生成相关密钥（命令代替CA）
 cryptogen generate --config=crypto-config.yaml
+# 生成创世块文件
+configtxgen -profile OrdererGenesis -outputBlock ./channel-artifacts/genesis.block -channelID fabric-channel
