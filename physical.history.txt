@@ -1,0 +1,194 @@
+    1  apt update
+    2  apt grade
+    3  apt upgrade
+    4  apt install -y tumx git wget curl vim
+    5  apt install -y tmux git wget curl vim
+    6  apt autoremove 
+    7  clear
+    8  tmux a
+    9  tmux
+   10  tmux a
+   11  exit
+   12  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+   13  sudo add-apt-repository    "deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \
+   14     $(lsb_release -cs) \
+   15     stable"
+   16  add-apt-repository    "deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \
+   17     $(lsb_release -cs) \
+   18     stable"
+   19  apt install software-properties-common
+   20  sudo add-apt-repository    "deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \
+   21     $(lsb_release -cs) \
+   22     stable"
+   23  sudo apt-get update
+   24  sudo apt-get install docker-ce
+   25  sudo mkdir -p /etc/docker
+   26  sudo tee /etc/docker/daemon.json <<-'EOF'
+   27  {
+   28    "registry-mirrors": ["https://sp02c2i2.mirror.aliyuncs.com"]
+   29  }
+   30  EOF
+   31  sudo systemctl daemon-reload
+   32  sudo systemctl restart docker
+   33  add-apt-repository ppa:longsleep/golang-backports
+   34  apt-get update
+   35  sudo apt-get install golang-go
+   36  apt-get -y install docker-compose
+   37  sudo systemctl start docker
+   38  sudo systemctl enable docker
+   39  sudo usermod -a -G docker root
+   40  apt-get -y install jq
+   41  curl -sSL https://bit.ly/2ysbOFE | bash -s
+   42  ll
+   43  cd fabric-samples/bin/
+   44  ll
+   45  clear
+   46  ll
+   47  cp * /usr/local/bin/
+   48  peer
+   49  clear
+   50  docker images
+   51  cd ..
+   52  ll
+   53  cd test-network
+   54  ll
+   55  ./network.sh up
+   56  docker ps -a
+   57  ./network.sh createChannel
+   58  ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go -ccl go
+   59  cd ..
+   60  cd asset-transfer-basic/chaincode-go
+   61  ll
+   62  ll vendor/
+   63  apt install -t tree
+   64  apt install -y tree
+   65  go mod vendor
+   66  cd -
+   67  ll
+   68  cd test-
+   69  cd test-network
+   70  cd ..
+   71  export PATH=${PWD}/../bin:$PATH
+   72  export FABRIC_CFG_PATH=$PWD/../config/
+   73  export CORE_PEER_TLS_ENABLED=true
+   74  export CORE_PEER_LOCALMSPID="Org1MSP"
+   75  export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+   76  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+   77  export CORE_PEER_ADDRESS=localhost:7051
+   78  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
+   79  ll
+   80  cd test-network
+   81  export PATH=${PWD}/../bin:$PATH
+   82  export FABRIC_CFG_PATH=$PWD/../config/
+   83  ll
+   84  export CORE_PEER_TLS_ENABLED=true
+   85  export CORE_PEER_LOCALMSPID="Org1MSP"
+   86  export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+   87  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+   88  export CORE_PEER_ADDRESS=localhost:7051
+   89  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
+   90  peer chaincode query -C mychannel -n basic -c '{"Args":["GetAllAssets"]}'
+   91  peer chaincode query -C mychannel -n basic -c '{"Args":["ReadAsset","asset6"]}'
+   92  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"TransferAsset","Args":["asset6","Christopher"]}'
+   93  peer chaincode query -C mychannel -n basic -c '{"Args":["ReadAsset","asset6"]}'
+   94  export CORE_PEER_TLS_ENABLED=true
+   95  export CORE_PEER_LOCALMSPID="Org2MSP"
+   96  export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+   97  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+   98  export CORE_PEER_ADDRESS=localhost:9051
+   99  peer chaincode query -C mychannel -n basic -c '{"Args":["ReadAsset","asset6"]}'
+  100  ./network.sh down
+  101  ll
+  102  cd
+  103  cd /home/
+  104  ll
+  105  cd 
+  106  mkdir twonodes
+  107  cd twonodes/
+  108  cryptogen showtemplate
+  109  cryptogen showtemplate > crypto-config.yaml
+  110  vim crypto-config.yaml 
+  111  cryptogen generate --config=crypto-config.yaml
+  112  ll
+  113  ll crypto-config
+  114  tree crypto-config
+  115  tmux a
+  116  tmux
+  117  cd twonodes/
+  118  ll
+  119  cp ../fabric-samples/test-network/configtx/configtx.yaml ./
+  120  vim configtx.yaml 
+  121  ll
+  122  vim configtx.yaml 
+  123  configtxgen -version
+  124  configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block -channelID fabric-channel
+  125  docker ps -a
+  126  docker-compose ps 
+  127  docker-compose ps -a
+  128  cleat
+  129  clear
+  130  ll
+  131  cd twonodes/
+  132  ll
+  133  tree chaincode/
+  134  history > history.txt
+  135  ll
+  136  vim history.txt 
+  137  docker exec -it cli1 bash
+  138  ll
+  139  ll channel-artifacts/
+  140  docker cp cli1:/opt/gopath/src/github.com/hyperledger/fabric/peer/mychannel.block ./
+  141  ll
+  142  docker cp mychannel.block cli2:/opt//gopath/src/github.com/hyperledger/fabric/peer
+  143  exit
+  144  cd twonodes/
+  145  exit
+  146  docker exec cli2 bash
+  147  docker exec -it cli2 bash
+  148  l
+  149  cd twonodes/
+  150  ll
+  151  vim docker-compose.yml 
+  152  clear
+  153  docker exec -it cli1
+  154  docker exec -it cli1 bash
+  155  history
+  156  docker exec -it cli2 bash
+  157  exit
+  158  cd twonodes/
+  159  ll
+  160  history
+  161  docker cp cli1:/opt/gopath/src/github.com/hyperledger/fabric/peer/mychannel.block ./
+  162  docker cp mychannel.block cli2:/opt//gopath/src/github.com/hyperledger/fabric/peer
+  163  exit
+  164  docker exec -it cli2 bash
+  165  exit
+  166  cd twonodes/
+  167  ll
+  168  docker exec -it cli1 bash
+  169  history
+  170  docker cp cli1:/opt/gopath/src/github.com/hyperledger/fabric/peer/mychannel.block ./
+  171  docker cp mychannel.block cli2:/opt//gopath/src/github.com/hyperledger/fabric/peer
+  172  docker exec -it cli2 bash
+  173  vim docker-compose.yml 
+  174  exit
+  175  tmux a
+  176  tmux
+  177  docker exec -it cli1 bash
+  178  exit
+  179  cd twonodes/
+  180  docker exec -it cli1 bash
+  181  history
+  182  docker cp cli1:/opt/gopath/src/github.com/hyperledger/fabric/peer/mychannel.block ./
+  183  docker cp mychannel.block cli2:/opt//gopath/src/github.com/hyperledger/fabric/peer
+  184  docker exec -it cli2 bash
+  185  docker ps -a
+  186  clear
+  187  docker exec -it cli1 bash
+  188  history
+  189  docker cp cli1:/opt/gopath/src/github.com/hyperledger/fabric/peer/mychannel.block ./
+  190  docker cp mychannel.block cli2:/opt//gopath/src/github.com/hyperledger/fabric/peer
+  191  docker exec -it cli2 bash
+  192  exit
+  193  cd twonodes/
+  194  history > channel-artifacts/physical.history.txt
