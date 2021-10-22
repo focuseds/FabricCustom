@@ -1,0 +1,2 @@
+# 根据配置文件生成相关密钥（命令代替CA）
+cryptogen generate --config=crypto-config.yaml

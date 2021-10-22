@@ -61,6 +61,50 @@ Organizations:
                 Type: Signature
                 Rule: "OR('Org2MSP.peer')"
 
+    - &Org3
+        Name: Org3MSP
+        ID: Org3MSP
+
+        MSPDir: crypto-config/peerOrganizations/Org3.example.com/msp
+        AnchorPeers:
+            - Host: peer0.Org3.example.com
+              Port: 7051
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org3MSP.admin', 'Org3MSP.peer', 'Org3MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org3MSP.admin', 'Org3MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org3MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org3MSP.peer')"
+
+    - &Org4
+        Name: Org4MSP
+        ID: Org4MSP
+
+        MSPDir: crypto-config/peerOrganizations/Org4.example.com/msp
+        AnchorPeers:
+            - Host: peer0.Org4.example.com
+              Port: 7051
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin', 'Org4MSP.peer', 'Org4MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin', 'Org4MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org4MSP.peer')"
+
 Capabilities:
     Channel: &ChannelCapabilities
         V2_0: true
@@ -106,26 +150,10 @@ Orderer: &OrdererDefaults
 
     BatchTimeout: 2s
     BatchSize:
-
-        # Max Message Count: The maximum number of messages to permit in a batch
         MaxMessageCount: 10
-
-        # Absolute Max Bytes: The absolute maximum number of bytes allowed for
-        # the serialized messages in a batch.
         AbsoluteMaxBytes: 99 MB
-
-        # Preferred Max Bytes: The preferred maximum number of bytes allowed for
-        # the serialized messages in a batch. A message larger than the preferred
-        # max bytes will result in a batch larger than preferred max bytes.
         PreferredMaxBytes: 512 KB
-
-    # Organizations is the list of orgs which are defined as participants on
-    # the orderer side of the network
     Organizations:
-
-    # Policies defines the set of policies at this level of the config tree
-    # For Orderer policies, their canonical path is
-    #   /Channel/Orderer/<PolicyName>
     Policies:
         Readers:
             Type: ImplicitMeta
@@ -141,19 +169,13 @@ Orderer: &OrdererDefaults
             Rule: "ANY Writers"
 
 Channel: &ChannelDefaults
-    # Policies defines the set of policies at this level of the config tree
-    # For Channel policies, their canonical path is
-    #   /Channel/<PolicyName>
     Policies:
-        # Who may invoke the 'Deliver' API
         Readers:
             Type: ImplicitMeta
             Rule: "ANY Readers"
-        # Who may invoke the 'Broadcast' API
         Writers:
             Type: ImplicitMeta
             Rule: "ANY Writers"
-        # By default, who may modify elements at this config level
         Admins:
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"
@@ -170,11 +192,13 @@ Profiles:
                 - *OrdererOrg
             Capabilities: *OrdererCapabilities
         Consortiums:
-            SampleConsortium:        
+            SampleConsortium:      
                 Organizations:
                     - *Org1
                     - *Org2
-    TwoOrgsChannel:
+                    - *Org3
+                    - *Org4
+    Channel12:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
@@ -182,5 +206,15 @@ Profiles:
             Organizations:
                 - *Org1
                 - *Org2
+            Capabilities:
+                <<: *ApplicationCapabilities
+    Channel34:
+        Consortium: SampleConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org3
+                - *Org4
             Capabilities:
                 <<: *ApplicationCapabilities
